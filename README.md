@@ -20,15 +20,17 @@ A controller pattern for Rails that supports separate classes for each action. T
 
 ## Benefits
 
-The spaghetti of `:only` and `:except` options for controller filters go away. Each filter should be declared on only the action classes that use it.
+Promotes the use of mixins (concerns) to share behavior between actions.
 
-Logic that checks the request's verb is considered an anti-pattern. Instead, create a separate action for each verb.
+Simplifies controller filters. The `:only` and `:except` options disappear when filters are only declared on the action classes that use it.
 
-Logic that checks the current controller and action names is also considered an anti-pattern. Instead, include the logic into only the controller actions that use it.
+Actions that behave differently based on the request's verb are considered an anti-pattern. Instead, create a separate action for each verb.
 
-Instead of passing ivar assigns, the view can reference the controller as a light-weight view object.
+Behavior that checks the current controller and action names is also considered an anti-pattern. Instead, include the logic into only the controller actions that use it.
 
-unimplemented: Parameters can be strongly typed with a declarative DSL. This could be extended to generate documentation.
+The view can reference the controller as a light-weight view object. This provides a convenient way to extract view logic and access data without ivar assigns.
+
+unimplemented: Parameters can be strongly typed with a declarative DSL to validate requests. This effort could be reused to also generate API documentation.
 
 ## Keeping DRY
 
@@ -45,7 +47,7 @@ The base classes inherit from `ActionController::Base` for each HTTP verb. Your 
 * [PUTAction]
 * [DELETEAction]
 
-A set of common RESTful archetypes may be subclassed. Each archetype includes default logic for a bare-bones simple pattern, but could reasonably be customized for your application's own custom patterns.
+ClassAction also provides a set of common RESTful archetypes. Each archetype includes default logic for a bare-bones simple pattern, but could reasonably be customized for your application's own custom patterns.
 
 * [IndexAction]
 * [ShowAction]
@@ -60,7 +62,7 @@ A set of common RESTful archetypes may be subclassed. Each archetype includes de
 
 * Figure out dev environment reloading.
 * Add DSL for parameter typing.
-* Build up from AbstractController::Base instead of ActionController::Base.
+* Build up from AbstractController::Base instead of ActionController::Base. Drop HideActions and clean up #visible_action?.
 
 ## Installation
 
