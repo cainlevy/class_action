@@ -8,8 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = ClassAction::VERSION
   spec.authors       = ["Lance Ivy"]
   spec.email         = ["lance@cainlevy.net"]
-  spec.description   = %q{Separate classes for each Rails controller action.}
-  spec.homepage      = ""
+  spec.summary       = "Separate classes for each Rails controller action."
+  spec.description   = spec.summary
+  spec.homepage      = "http://github.com/cainlevy/class_action"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
@@ -20,5 +21,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
 
+  spec.add_dependency "activesupport", "~> 3.2"
   spec.add_dependency "actionpack", "~> 3.2"
 end
