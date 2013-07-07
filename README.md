@@ -4,6 +4,33 @@ A controller pattern for Rails that supports separate classes for each action. T
 
 ## Example
 
+A well-factored action:
+
+    # app/controllers/foos_controller.rb
+    module FoosController
+      include ClassAction
+
+      class Index < GETAction
+        respond_to :html
+
+        def perform
+          respond_with foo
+        end
+
+        def foo
+          @foo ||= scope.find(params[:id])
+        end
+
+        protected
+
+        def scope
+          Foo
+        end
+      end
+    end
+
+Or more succinctly:
+
     # app/controllers/foos_controller.rb
     module FoosController
       include ClassAction
@@ -32,12 +59,6 @@ The view can reference the controller as a light-weight view object. This provid
 
 unimplemented: Parameters can be strongly typed with a declarative DSL to validate requests. This effort could be reused to also generate API documentation.
 
-## Keeping DRY
-
-Each action class will include two modules:
-* The controller module (e.g. `FoosController` itself), for concerns that apply to each action on the resource.
-* A global ApplicationConcerns module for concerns that apply across the entire application. (This could've been named ApplicationController, but it would complicate transitioning mature codebases.)
-
 ## VERB inheritance
 
 The base classes inherit from `ActionController::Base` for each HTTP verb. Your application might customize these with behavior specific to certain verbs, such as `protect_from_forgery`.
@@ -46,6 +67,39 @@ The base classes inherit from `ActionController::Base` for each HTTP verb. Your 
 * [POSTAction]
 * [PUTAction]
 * [DELETEAction]
+
+## Keeping DRY
+
+Each action class will include two modules:
+* The controller module (e.g. `FoosController` itself), for concerns that apply to each action on the resource.
+* A global ApplicationConcerns module for concerns that apply across the entire application.
+
+## Transitioning Existing Applications
+
+ClassAction can live side-by-side with legacy controllers classes. The initial cost lies in moving ApplicationController methods and logic into ApplicationConcerns, then including ApplicationConcerns for backwards compatibility.
+
+Before:
+
+    # app/controllers/application_controller.rb
+    class ApplicationController < ActionController::Base
+      def some_shared_method
+        # ...
+      end
+    end
+
+After:
+
+    # app/controllers/concerns/application_concerns.rb
+    module ApplicationConcerns
+      def some_shared_method
+        # ...
+      end
+    end
+
+    # app/controllers/application_controller.rb
+    class ApplicationController < ActionController::Base
+      include ApplicationConcerns
+    end
 
 ## Generators
 
@@ -60,15 +114,6 @@ ClassAction provides generators to assist with boilerplate and simple RESTful se
     # creates a Posts controller with all RESTful actions:
     rails generate class_action:controller post --all
 
-## TODO
-
-* Tests generator (with scaffolding options) (test unit)
-* Views generator (with scaffolding options) (erb)
-* Figure out dev environment reloading.
-* Rename controllers as resources? Generate into and load from app/resources.
-* Add DSL for parameter typing. Virtus? Hide parameters behind strong typing accessors. Make `params` give deprecation warnings.
-* Build up from AbstractController::Base instead of ActionController::Base. Drop HideActions and clean up #visible_action?.
-
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -78,6 +123,12 @@ Add this line to your application's Gemfile:
 And then execute:
 
     $ bundle
+
+## TODO
+
+* Figure out dev environment reloading.
+* Add DSL for parameter typing. Virtus? Hide parameters behind strong typing accessors. Make `params` give deprecation warnings.
+* Build up from AbstractController::Base instead of ActionController::Base. Drop HideActions and clean up #visible_action?.
 
 ## Contributing
 
