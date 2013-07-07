@@ -12,8 +12,10 @@ module <%= controller_class_name %>Controller
       @<%= plural_resource_name %> ||= scope
     end
 
+    protected
+
     def scope
-      resource_type.all
+      <%= class_name %>.all
     end
   end<% end %><% if options[:all] || options[:show] %>
 
@@ -27,6 +29,12 @@ module <%= controller_class_name %>Controller
     def <%= singular_resource_name %>
       @<%= singular_resource_name %> ||= scope.find(params[:id])
     end
+
+    protected
+
+    def scope
+      <%= class_name %>
+    end
   end<% end %><% if options[:all] || options[:new] %>
 
   class New < GETAction
@@ -37,7 +45,7 @@ module <%= controller_class_name %>Controller
     end
 
     def <%= singular_resource_name %>
-      @<%= singular_resource_name %> ||= resource_type.new
+      @<%= singular_resource_name %> ||= <%= class_name %>.new
     end
   end<% end %><% if options[:all] || options[:create] %>
 
@@ -52,7 +60,7 @@ module <%= controller_class_name %>Controller
     end
 
     def <%= singular_resource_name %>
-      @<%= singular_resource_name %> ||= resource_type.new
+      @<%= singular_resource_name %> ||= <%= class_name %>.new
     end
   end<% end %><% if options[:all] || options[:edit] %>
 
@@ -65,6 +73,12 @@ module <%= controller_class_name %>Controller
 
     def <%= singular_resource_name %>
       @<%= singular_resource_name %> ||= scope.find(params[:id])
+    end
+
+    protected
+
+    def scope
+      <%= class_name %>
     end
   end<% end %><% if options[:all] || options[:update] %>
 
@@ -81,6 +95,12 @@ module <%= controller_class_name %>Controller
     def <%= singular_resource_name %>
       @<%= singular_resource_name %> ||= scope.find(params[:id])
     end
+
+    protected
+
+    def scope
+      <%= class_name %>
+    end
   end<% end %><% if options[:all] || options[:delete] %>
 
   class Delete < GETAction
@@ -92,6 +112,12 @@ module <%= controller_class_name %>Controller
 
     def <%= singular_resource_name %>
       @<%= singular_resource_name %> ||= scope.find(params[:id])
+    end
+
+    protected
+
+    def scope
+      <%= class_name %>
     end
   end<% end %><% if options[:all] || options[:destroy] %>
 
@@ -106,6 +132,12 @@ module <%= controller_class_name %>Controller
 
     def <%= singular_resource_name %>
       @<%= singular_resource_name %> ||= scope.find(params[:id])
+    end
+
+    protected
+
+    def scope
+      <%= class_name %>
     end
   end<% end %>
 end
