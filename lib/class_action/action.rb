@@ -3,10 +3,6 @@ module ClassAction
     extend ActiveSupport::Concern
 
     # the minimum implementation
-    #
-    # archetypal actions provide default implementations that may be
-    # customized by overwriting methods like #scope or by overwriting
-    # the entire #perform method.
     def perform
       raise NotImplementedError
     end
@@ -15,17 +11,15 @@ module ClassAction
 
     # the scope used to find resources
     #
-    # used by many archetypes. this is the place to add scopes for
-    # security (e.g. current_user.association) or for filtering
-    # (e.g. current_user.association.published)
+    # overwrite to extend the scope for security, filtering, paginating, etc.
     def scope
       resource_type
     end
 
     # the resource object represented by the endpoint.
     #
-    # commonly an ActiveRecord class, although the archetypes mostly
-    # just assume that it responds to #attributes= and #find(id).
+    # not required to be an ActiveRecord class. the generators only
+    # assume that it responds to a few methods like #attributes= and #find(id).
     def resource_type
       @resource ||= self.class.resource_name.constantize
     end
@@ -69,11 +63,6 @@ module ClassAction
       # e.g. 'Foo' from Admin::FooController::Index
       def resource_name
         @resource_name ||= parent_module.demodulize.sub(/Controller?$/, '').singularize
-      end
-
-      # a common manipulation of resource_name, cached for performance
-      def resource_symbol
-        @resource_symbol ||= resource_name.underscore.to_sym
       end
 
       # the containing controller (resource) module

@@ -38,7 +38,7 @@ Each action class will include two modules:
 * The controller module (e.g. `FoosController` itself), for concerns that apply to each action on the resource.
 * A global ApplicationConcerns module for concerns that apply across the entire application. (This could've been named ApplicationController, but it would complicate transitioning mature codebases.)
 
-## RESTful archetypes and VERB actions
+## VERB inheritance
 
 The base classes inherit from `ActionController::Base` for each HTTP verb. Your application might customize these with behavior specific to certain verbs, such as `protect_from_forgery`.
 
@@ -47,21 +47,27 @@ The base classes inherit from `ActionController::Base` for each HTTP verb. Your 
 * [PUTAction]
 * [DELETEAction]
 
-ClassAction also provides a set of common RESTful archetypes. Each archetype includes default logic for a bare-bones simple pattern, but could reasonably be customized for your application's own custom patterns.
+## Generators
 
-* [IndexAction]
-* [ShowAction]
-* [NewAction]
-* [CreateAction]
-* [EditAction]
-* [UpdateAction]
-* [DeleteAction]
-* [DestroyAction]
+ClassAction provides generators to assist with boilerplate and simple RESTful setups.
+
+    # creates an empty Posts controller:
+    rails generate class_action:controller post
+
+    # creates a Posts controller with a few RESTful actions:
+    rails generate class_action:controller post --index --show --create
+
+    # creates a Posts controller with all RESTful actions:
+    rails generate class_action:controller post --all
 
 ## TODO
 
+* Tests generator (with scaffolding options) (test unit)
+* Views generator (with scaffolding options) (erb)
+* Auto-load testing patch for appropriate Rails versions
 * Figure out dev environment reloading.
-* Add DSL for parameter typing.
+* Rename controllers as resources? Generate into and load from app/resources.
+* Add DSL for parameter typing. Virtus? Hide parameters behind strong typing accessors. Make `params` give deprecation warnings.
 * Build up from AbstractController::Base instead of ActionController::Base. Drop HideActions and clean up #visible_action?.
 
 ## Installation
