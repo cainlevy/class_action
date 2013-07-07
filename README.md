@@ -64,7 +64,6 @@ ClassAction provides generators to assist with boilerplate and simple RESTful se
 
 * Tests generator (with scaffolding options) (test unit)
 * Views generator (with scaffolding options) (erb)
-* Auto-load testing patch for appropriate Rails versions
 * Figure out dev environment reloading.
 * Rename controllers as resources? Generate into and load from app/resources.
 * Add DSL for parameter typing. Virtus? Hide parameters behind strong typing accessors. Make `params` give deprecation warnings.
