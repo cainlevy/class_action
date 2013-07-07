@@ -11,6 +11,10 @@ module <%= controller_class_name %>Controller
     def <%= plural_resource_name %>
       @<%= plural_resource_name %> ||= scope
     end
+
+    def scope
+      resource_type.all
+    end
   end<% end %><% if options[:all] || options[:show] %>
 
   class Show < GETAction

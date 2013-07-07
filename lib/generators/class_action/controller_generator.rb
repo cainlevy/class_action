@@ -31,7 +31,8 @@ module ClassAction
         template 'controller.rb', File.join('app/controllers', class_path, "#{controller_file_name}_controller.rb")
       end
 
-      hook_for :template_engine, :test_framework
+      hook_for :template_engine, as: :scaffold
+      hook_for :test_framework
 
       alias_method :plural_resource_name, :plural_table_name
       alias_method :singular_resource_name, :singular_table_name
