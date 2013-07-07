@@ -17,3 +17,4 @@ end
 require_relative 'application_concerns'
 require_relative 'class_action/railtie'
 require_relative 'class_action/action'
+require_relative 'class_action/testing' if Rails.env.test?
